@@ -6,19 +6,21 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 
+# Directories
 INC_DIR = include
 SRCS_DIR = src
 OBJS_DIR = objs
-
-# Sources
-SRCS = pipex.c
-
 OBJS = $(addprefix ${OBJS_DIR}/, ${SRCS:%.c=%.o})
 
+# Sources
+SRCS = pipex.c end-program.c utils.c
+
+# Libft
 LIBFT_PATH = libft
 LIBFT_LIB = ${LIBFT_PATH}/libft.a
 LIBFT_INC = ${LIBFT_PATH}/include
 
+# Colors
 GREEN	= \033[32;1m
 CYAN	= \033[36;1m
 RED		= \033[0;31m
