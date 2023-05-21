@@ -6,7 +6,7 @@
 /*   By: rene <rene@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 20:12:59 by rene              #+#    #+#             */
-/*   Updated: 2023/05/21 00:53:42 by rene             ###   ########.fr       */
+/*   Updated: 2023/05/21 10:51:09 by rene             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,19 @@
 // to malloc, free, exit
 # include <stdlib.h>
 
+// to perror, strerror, errno
+# include <stdio.h>
+# include <string.h>
+# include <errno.h>
+
 # include "../libft/include/libft.h"
 
 # define ERR_INPUT "Invalid number of arguments: ./pipex infile cmd1 cmd2 outfile"
-# define ERR_INFILE "Infile: No such file or directory"
-# define ERR_OUTFILE "Outfile: Cannot create file"
-# define ERR_PIPE "Pipe: Pipe initialization failed"
-# define ERR_FORK "Fork: Child process creation failed"
-# define ERR_CMD "Command not found"
+# define ERR_INFILE "Infile"
+# define ERR_OUTFILE "Outfile"
+# define ERR_PIPE "Pipe"
+# define ERR_FORK "Fork"
+# define ERR_CMD "Command"
 # define ERR_MALLOC "Dynamic memory allocation failed"
 
 typedef struct s_data
@@ -49,7 +54,14 @@ typedef struct s_data
     char    **envp;
 }            t_data;
 
-void ft_testing(t_data *pipex_data);
-void ft_end_program(t_data *pipex_data, char *error_message);
+void    ft_init(t_data *pipex_data);
+char    **ft_get_envp(char **envp);
+//void    ft_testing(t_data *pipex_data);
+
+void    ft_first_child(t_data *pipex_data, char **envp);
+void    ft_second_child(t_data *pipex_data, char **envp);
+
+void    ft_close_pipes(t_data *pipex_data);
+void    ft_end_program(t_data *pipex_data, char *error_message);
 
 #endif

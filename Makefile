@@ -13,7 +13,7 @@ OBJS_DIR = objs
 OBJS = $(addprefix ${OBJS_DIR}/, ${SRCS:%.c=%.o})
 
 # Sources
-SRCS = pipex.c end-program.c utils.c
+SRCS = pipex.c processes.c end-program.c utils.c
 
 # Libft
 LIBFT_PATH = libft
