@@ -6,7 +6,7 @@
 /*   By: rene <rene@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 01:02:47 by rene              #+#    #+#             */
-/*   Updated: 2023/05/21 10:54:21 by rene             ###   ########.fr       */
+/*   Updated: 2023/05/22 06:00:55 by rene             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static void   ft_exec_cmd(t_data *pipex_data, char **cmd, char **envp)
     int i;
 
     i = -1;
+    if (cmd[0][0] == '/')
+        cmd[0] = ft_strrchr(pipex_data->cmd1[0], '/') + 1;
     while (pipex_data->envp[++i])
     {
         cmd_file = ft_strjoin("/", cmd[0]);
@@ -37,26 +39,19 @@ static void   ft_exec_cmd(t_data *pipex_data, char **cmd, char **envp)
 
 void    ft_first_child(t_data *pipex_data, char **envp)
 {
-    int original_fd_outfile;
-
-    original_fd_outfile = dup(STDOUT_FILENO);
-    dup2(pipex_data->fd_infile, STDIN_FILENO);
+    close(pipex_data->pipefd[0]);
+    if (pipex_data->fd_infile > 0)
+        dup2(pipex_data->fd_infile, STDIN_FILENO);
     dup2(pipex_data->pipefd[1], STDOUT_FILENO);
     ft_exec_cmd(pipex_data, pipex_data->cmd1, envp);
-    dup2(original_fd_outfile, STDOUT_FILENO);
-    close(original_fd_outfile);
-    ft_end_program(pipex_data, ERR_CMD);
+    ft_end_program(pipex_data, ERR_CMD, true);
 }
 
 void    ft_second_child(t_data *pipex_data, char **envp)
 {
-    int original_fd_outfile;
-
-    original_fd_outfile = dup(STDOUT_FILENO);
+    close(pipex_data->pipefd[1]);
     dup2(pipex_data->fd_outfile, STDOUT_FILENO);
     dup2(pipex_data->pipefd[0], STDIN_FILENO);
     ft_exec_cmd(pipex_data, pipex_data->cmd2, envp);
-    dup2(original_fd_outfile, STDOUT_FILENO);
-    close(original_fd_outfile);
-    ft_end_program(pipex_data, ERR_CMD);
+    ft_end_program(pipex_data, ERR_CMD, true);
 }

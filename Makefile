@@ -3,7 +3,7 @@ NAME = pipex
 
 # Compiler
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -rf
 
 # Directories
